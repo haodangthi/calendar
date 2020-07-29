@@ -26,7 +26,7 @@ export class CalendarComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.calendarSevice.count$.subscribe((res) => {
+    this.calendarSevice.calendar$.subscribe((res) => {
       this.appointments = res.appointments;
       this.months = res.months;
       console.log(this.months);
