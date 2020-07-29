@@ -1,0 +1,30 @@
+.grid{
+    display: grid;
+    grid-template-columns: repeat(32, 1fr);
+        // grid-template-rows: repeat(5, 1fr);
+     .month{
+         width: 100px;
+     }
+
+    li{
+        list-style: none;
+        border-right: 1px solid black;
+        border-bottom: 1px solid black;
+        text-align: center;
+    
+
+    }
+    
+}
+.isToday{
+    background-color: red;
+    color: white;
+}
+.isWeekend{
+    background-color: grey;
+    color: white;
+}
+.isSelected{
+    background-color: blueviolet;
+    color: white;
+}

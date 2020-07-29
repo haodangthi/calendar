@@ -1,0 +1,53 @@
+
+
+<form class="create-request" [formGroup]="createRequestForm">
+
+<div class="create-request__select">
+  <mat-form-field appearance="fill" >
+    <mat-label>Type</mat-label>
+    <mat-select  formControlName="type">
+      <mat-option *ngFor="let food of foods" [value]="food.value">
+        {{food.viewValue}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+</div>
+
+<div class="create-request__select">
+  <mat-form-field  >
+    <mat-label>Choose a start date</mat-label>
+    <input matInput [min]="minDate"  [matDatepicker]="picker"  formControlName="startDate" [(ngModel)]='stardDate'/>
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+
+</div>
+
+<div class="create-request__select">
+  <mat-form-field >
+    <mat-label>Choose an end date</mat-label>
+    <input matInput  [min]="stardDate" [matDatepicker]="picker1" formControlName="endDate"/>
+    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+    <mat-datepicker #picker1></mat-datepicker>
+  </mat-form-field>
+
+</div>
+
+
+  <div class="create-request__btn">
+    <button mat-raised-button color="primary" (click)='createRequest()'
+    [disabled]="
+          !(
+            createRequestForm.get('endDate').valid
+          )
+        ">
+      Submit
+     </button>
+  </div>
+
+ 
+
+</form>
+
+  

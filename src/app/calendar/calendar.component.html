@@ -1,0 +1,35 @@
+
+
+
+<div *ngFor='let month of months' class="grid">
+    <div class="month">{{month.name}}</div>
+    
+      <li *ngFor='let day of month.days;let i=index' 
+      [class.isToday]='month.days[i]&&month.days[i].isToday'
+      [class.isWeekend]='month.days[i]&&month.days[i].isWeekend'
+      [class.isSelected]='isAppointment(day)'
+      (click)='chooseDay($event,month.days[i]&&month.days[i])'
+      >{{month.days[i]&&month.days[i].value||''}}</li>
+
+    
+   
+  </div>
+
+
+
+  
+ 
+
+
+ 
+
+<!-- 
+  <button id="increment" (click)="increment()">Increment</button>
+
+<div>Current Count: {{ count$ | async }}</div>
+
+<button id="decrement" (click)="decrement()">Decrement</button>
+
+<button id="reset" (click)="reset()">Reset Counter</button> -->
+
+<!-- [class.isSelected]='month.days[i]&&month.days[i].isSelected &&!month.days[i].isWeekend' -->
