@@ -29,8 +29,6 @@ export class CalendarComponent implements OnInit {
     this.calendarSevice.calendar$.subscribe((res) => {
       this.appointments = res.appointments;
       this.months = res.months;
-      console.log(this.months);
-      console.log(this.isAppointment(this.months[6].days[29]));
     });
 
     const date = new Date();
@@ -39,7 +37,7 @@ export class CalendarComponent implements OnInit {
 
   isAppointment(day) {
     return this.appointments.some((app) => {
-      return app.startDate <= day.id && app.endDate >= day.id;
+      return app.startDate <= day.id && app.endDate >= day.id && !day.isWeekend;
     });
   }
 }

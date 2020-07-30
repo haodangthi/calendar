@@ -1,7 +1,6 @@
 import { createReducer, on, Action } from '@ngrx/store';
 import { reset, addAppointment } from './calendar.actions';
 import { Calendar } from './models/calendar';
-import { Request } from './models/request';
 
 import calendar from './calendarState';
 export const initialState = calendar;

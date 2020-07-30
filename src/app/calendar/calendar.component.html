@@ -1,19 +1,21 @@
 
 
+<div class="calendar">
 
 <div *ngFor='let month of months' class="grid">
-    <div class="month">{{month.name}}</div>
+  <div class="month">{{month.name}}</div>
+  
+    <li *ngFor='let day of month.days;let i=index' 
+    [class.isToday]='day&&day.isToday'
+    [class.isWeekend]='day&&day.isWeekend'
+    [class.isSelected]='isAppointment(day)'
     
-      <li *ngFor='let day of month.days;let i=index' 
-      [class.isToday]='month.days[i]&&month.days[i].isToday'
-      [class.isWeekend]='month.days[i]&&month.days[i].isWeekend'
-      [class.isSelected]='isAppointment(day)'
-      (click)='chooseDay($event,month.days[i]&&month.days[i])'
-      >{{month.days[i]&&month.days[i].value||''}}</li>
+    >{{day&&day.value}}</li>
 
-    
-   
-  </div>
+  
+ 
+</div>
+</div>
 
 
 

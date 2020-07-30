@@ -1,3 +1,10 @@
+.calendar{
+    margin: 10% auto;
+    width: 90%;
+    border: 1px solid black;
+    border-radius: 10px;
+}
+
 .grid{
     display: grid;
     grid-template-columns: repeat(32, 1fr);
@@ -6,15 +13,19 @@
          width: 100px;
      }
 
-    li{
+    li{ 
+        height: 50px;
         list-style: none;
-        border-right: 1px solid black;
         border-bottom: 1px solid black;
+        border-left: 1px solid black;
+        
         text-align: center;
-    
-
     }
     
+    li:nth-child(31n+1):nth-last-child(-n+31),
+  li:nth-child(31n+1):nth-last-child(-n+31) ~ li {
+   
+}
 }
 .isToday{
     background-color: red;
