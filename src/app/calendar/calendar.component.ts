@@ -1,9 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import * as moment from 'moment';
 import { CalendarService } from '../sevices/calendar.service';
-import { Store, select } from '@ngrx/store';
-import { Observable } from 'rxjs';
-import { Calendar } from '../models/calendar';
 @Component({
   selector: 'app-calendar',
   templateUrl: './calendar.component.html',
@@ -14,21 +11,20 @@ export class CalendarComponent implements OnInit {
   title = 'calendar';
   current;
   days = Array(31);
-  appointments;
+  appointments = [];
   months;
-  //count$: Observable<Calendar>;
+  users;
 
   constructor(
     private calendarSevice: CalendarService //private store: Store<{ calendar: Calendar }>
-  ) {
-    //this.count$ = store.pipe(select('calendar'));
-    //console.log(this.count$);
-  }
+  ) {}
 
   ngOnInit(): void {
     this.calendarSevice.calendar$.subscribe((res) => {
-      this.appointments = res.appointments;
-      this.months = res.months;
+      this.appointments = (res && res.appointments) || [];
+      this.months = res && res.months;
+      console.log(res);
+      this.users = res && res.users;
     });
 
     const date = new Date();
@@ -37,7 +33,16 @@ export class CalendarComponent implements OnInit {
 
   isAppointment(day) {
     return this.appointments.some((app) => {
-      return app.startDate <= day.id && app.endDate >= day.id && !day.isWeekend;
+      return app.startDate <= day.id && app.endDate >= day.id;
+    });
+  }
+
+  appointmentExists(userId, day) {
+    const userAppointments = this.appointments.filter(
+      (app) => app.userId == userId
+    );
+    return userAppointments.some((app) => {
+      return app.startDate <= day.id && app.endDate >= day.id;
     });
   }
 }

@@ -9,11 +9,10 @@ import { CreateRequestComponent } from './create-request/create-request.componen
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  constructor(public dialog: MatDialog){}
+  title = 'calendar';
+  constructor(public dialog: MatDialog) {}
 
-  
   openDialog() {
     this.dialog.open(CreateRequestComponent);
   }
 }
-

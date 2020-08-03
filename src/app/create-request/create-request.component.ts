@@ -3,14 +3,16 @@ import {
   FormGroup,
   FormControl,
   Validators,
-  ValidatorFn,
-  AbstractControl
+  FormBuilder
 } from '@angular/forms';
+import { Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { dateValidator } from '../date-validator.directive';
 import * as moment from 'moment';
-import { Request } from '../models/request';
 import { CalendarService } from '../sevices/calendar.service';
+import { Appointment } from '../models/appointment';
+import { formatDate, checkDate } from '../helpers/formControl';
+import { requestFormValidator } from '../requestFormValidator';
+
 @Component({
   selector: 'app-create-request',
   templateUrl: './create-request.component.html',
@@ -19,41 +21,60 @@ import { CalendarService } from '../sevices/calendar.service';
 export class CreateRequestComponent implements OnInit {
   createRequestForm: FormGroup;
   minDate = moment().toDate();
-  stardDate;
+  startDate;
+  appointments = [];
+
   constructor(
     public dialogRef: MatDialogRef<CreateRequestComponent>,
-    private calendarService: CalendarService
+    private calendarService: CalendarService,
+    private fb: FormBuilder
   ) {}
-  foods = [
-    { value: 'steak-0', viewValue: 'Steak' },
-    { value: 'pizza-1', viewValue: 'Pizza' },
-    { value: 'tacos-2', viewValue: 'Tacos' }
-  ];
+
+  users;
 
   ngOnInit(): void {
-    this.createRequestForm = new FormGroup({
-      id: new FormControl('1'),
-      startDate: new FormControl(null, [Validators.required]),
-      endDate: new FormControl(null, [dateValidator]),
-      type: new FormControl(null)
+    this.calendarService.calendar$.subscribe((res) => {
+      //debugger;
+      this.appointments = (res && res.appointments) || [];
+      this.users = res.users;
+
+      if (!this.createRequestForm) {
+        this.createRequestForm = new FormGroup(
+          {
+            id: new FormControl('1'),
+            startDate: new FormControl(null, [Validators.required]),
+            endDate: new FormControl(null, [Validators.required]),
+            type: new FormControl(null),
+            userId: new FormControl(null, [Validators.required])
+          },
+          { validators: [requestFormValidator(this.appointments)] }
+        );
+      }
     });
   }
 
   createRequest() {
-    const newRequest: Request = this.createRequestForm.value;
-
-    const startDate = moment(newRequest.startDate);
-    const endDate = moment(newRequest.endDate);
-    // console.log(moment
-    //   .max(startDate, endDate)
-    //   .format('MM-DD-YYYY') == endDate.format('MM-DD-YYYY'));
-
+    debugger;
+    const newRequest: Appointment = this.createRequestForm.value;
     newRequest.startDate = formatDate(newRequest.startDate);
     newRequest.endDate = formatDate(newRequest.endDate);
-    this.calendarService.chooseDays(newRequest.startDate, newRequest.endDate);
-  }
-}
 
-function formatDate(date) {
-  return moment(date).clone().format('YYYY-MM-DD');
+    if (
+      checkDate(
+        this.appointments,
+        newRequest.startDate,
+        newRequest.endDate,
+        newRequest.userId
+      )
+    ) {
+      throw new Error();
+    } else {
+      this.calendarService.chooseDays(
+        newRequest.startDate,
+        newRequest.endDate,
+        newRequest.userId
+      );
+      this.dialogRef.close();
+    }
+  }
 }

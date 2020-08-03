@@ -1,37 +1,25 @@
-
-
 <div class="calendar">
 
-<div *ngFor='let month of months' class="grid">
-  <div class="month">{{month.name}}</div>
-  
-    <li *ngFor='let day of month.days;let i=index' 
-    [class.isToday]='day&&day.isToday'
-    [class.isWeekend]='day&&day.isWeekend'
-    [class.isSelected]='isAppointment(day)'
-    
-    >{{day&&day.value}}</li>
+  <div *ngFor='let month of months' class="grid">
+    <div class="month">{{month.name}}</div>
 
-  
- 
+    <li *ngFor='let day of month.days;let i=index' [class.isToday]='day&&day.isToday'
+      [class.isWeekend]='day&&day.isWeekend'>{{day&&day.value}}
+      <span class="lines">
+        <span *ngFor='let user of users' [ngStyle]="appointmentExists(user.id,day)?{'background-color':user.color}:null"
+          [class.isSelected]='isAppointment(day)' class="appointment"></span>
+      </span>
+    </li>
+
+
+
+
+
+  </div>
 </div>
-</div>
 
 
 
-  
- 
 
 
- 
 
-<!-- 
-  <button id="increment" (click)="increment()">Increment</button>
-
-<div>Current Count: {{ count$ | async }}</div>
-
-<button id="decrement" (click)="decrement()">Decrement</button>
-
-<button id="reset" (click)="reset()">Reset Counter</button> -->
-
-<!-- [class.isSelected]='month.days[i]&&month.days[i].isSelected &&!month.days[i].isWeekend' -->

@@ -11,8 +11,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatDialogModule, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
+import { MatDialogRef } from '@angular/material/dialog';
 //import { StoreModule } from '@ngrx/store';
 //import { reducers, metaReducers } from './reducers';
 //import { StoreDevtoolsModule } from '@ngrx/store-devtools';
@@ -20,6 +21,7 @@ import { MatSelectModule } from '@angular/material/select';
 
 import { StoreModule } from '@ngrx/store';
 import { calendarReducer } from './calendar.reducer';
+import { CalendarService } from './sevices/calendar.service';
 @NgModule({
   declarations: [AppComponent, CalendarComponent, CreateRequestComponent],
 
@@ -41,7 +43,7 @@ import { calendarReducer } from './calendar.reducer';
 
     StoreModule.forRoot({ calendar: calendarReducer })
   ],
-  providers: [],
+  providers: [CalendarService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

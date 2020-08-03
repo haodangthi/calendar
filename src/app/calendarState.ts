@@ -15,9 +15,27 @@ const calendar: Calendar = {
   months: months,
   appointments: [
     {
-      endDate: '2020-07-31',
-      id: '2020-07-292020-07-31',
-      startDate: '2020-07-29'
+      endDate: '2020-08-21',
+      id: '2020-08-212020-08-11',
+      startDate: '2020-08-11',
+      userId: '1'
+    }
+  ],
+  users: [
+    {
+      name: 'Dan',
+      id: '0',
+      color: 'green'
+    },
+    {
+      name: 'Daniel',
+      id: '1',
+      color: 'yellow'
+    },
+    {
+      name: 'Dima',
+      id: '2',
+      color: 'red'
     }
   ]
 };

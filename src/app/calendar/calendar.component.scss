@@ -1,3 +1,4 @@
+
 .calendar{
     margin: 10% auto;
     width: 90%;
@@ -14,12 +15,22 @@
      }
 
     li{ 
-        height: 50px;
+        min-height: 70px;
         list-style: none;
         border-bottom: 1px solid black;
         border-left: 1px solid black;
-        
+        position: relative;
         text-align: center;
+        .lines{
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            height: 60%;
+        }
+
     }
     
     li:nth-child(31n+1):nth-last-child(-n+31),
@@ -27,15 +38,40 @@
    
 }
 }
-.isToday{
+.isToday:before{
+    content: '';
+    width: 60%;
+    height: 60%;
+    border-radius: 50%;
+    position: absolute;
+    top: 0;
+    left: calc((100% - 60%) / 2);
     background-color: red;
     color: white;
+    z-index: -1;
 }
 .isWeekend{
     background-color: grey;
     color: white;
 }
-.isSelected{
+.isSelected::before{
+    // content: '';
+    width: 100%;
+    height: 20%;
+    //left: 0;
+    //bottom: 10%;
+    //position: absolute;
     background-color: blueviolet;
+    color: white;
+}
+
+.isSelected{
+    // content: '';
+    width: 100%;
+    height: 20%;
+    //left: 0;
+    //bottom: 10%;
+    //position: absolute;
+    margin-bottom: 15%;
     color: white;
 }
