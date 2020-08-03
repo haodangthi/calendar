@@ -8,10 +8,12 @@ import {
 import { Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import * as moment from 'moment';
-import { CalendarService } from '../sevices/calendar.service';
 import { Appointment } from '../models/appointment';
 import { formatDate, checkDate } from '../helpers/formControl';
 import { requestFormValidator } from '../requestFormValidator';
+import calendar from '../calendarState';
+import { Observable } from 'rxjs';
+import { CalendarService } from '../sevices/calendar.service';
 
 @Component({
   selector: 'app-create-request',
@@ -23,29 +25,27 @@ export class CreateRequestComponent implements OnInit {
   minDate = moment().toDate();
   startDate;
   appointments = [];
-
+  users = calendar.users;
+  calendar$: Observable<Appointment[]>;
   constructor(
     public dialogRef: MatDialogRef<CreateRequestComponent>,
-    private calendarService: CalendarService,
-    private fb: FormBuilder
-  ) {}
-
-  users;
+    private calendarService: CalendarService
+  ) {
+    this.calendar$ = this.calendarService.entities$;
+  }
 
   ngOnInit(): void {
-    this.calendarService.calendar$.subscribe((res) => {
-      //debugger;
-      this.appointments = (res && res.appointments) || [];
-      this.users = res.users;
-
+    this.calendar$.subscribe((res) => {
+      this.appointments = res;
       if (!this.createRequestForm) {
+        //debugger;
         this.createRequestForm = new FormGroup(
           {
             id: new FormControl('1'),
             startDate: new FormControl(null, [Validators.required]),
             endDate: new FormControl(null, [Validators.required]),
             type: new FormControl(null),
-            userId: new FormControl(null, [Validators.required])
+            userId: new FormControl(null)
           },
           { validators: [requestFormValidator(this.appointments)] }
         );
@@ -54,27 +54,15 @@ export class CreateRequestComponent implements OnInit {
   }
 
   createRequest() {
-    debugger;
     const newRequest: Appointment = this.createRequestForm.value;
     newRequest.startDate = formatDate(newRequest.startDate);
     newRequest.endDate = formatDate(newRequest.endDate);
 
-    if (
-      checkDate(
-        this.appointments,
-        newRequest.startDate,
-        newRequest.endDate,
-        newRequest.userId
-      )
-    ) {
-      throw new Error();
-    } else {
-      this.calendarService.chooseDays(
-        newRequest.startDate,
-        newRequest.endDate,
-        newRequest.userId
-      );
-      this.dialogRef.close();
-    }
+    this.calendarService.add({
+      startDate: newRequest.startDate,
+      endDate: newRequest.endDate,
+      userId: newRequest.userId
+    });
+    this.dialogRef.close();
   }
 }

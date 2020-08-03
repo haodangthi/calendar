@@ -13,15 +13,16 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDialogModule, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
-import { MatDialogRef } from '@angular/material/dialog';
-//import { StoreModule } from '@ngrx/store';
-//import { reducers, metaReducers } from './reducers';
-//import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-//import { environment } from '../environments/environment';
 
 import { StoreModule } from '@ngrx/store';
-import { calendarReducer } from './calendar.reducer';
 import { CalendarService } from './sevices/calendar.service';
+
+// ngrx data
+import { HttpClientModule } from '@angular/common/http';
+import { EntityDataModule, DefaultDataServiceConfig } from '@ngrx/data';
+import { entityConfig } from './entity-metadata';
+import { EffectsModule } from '@ngrx/effects';
+
 @NgModule({
   declarations: [AppComponent, CalendarComponent, CreateRequestComponent],
 
@@ -40,10 +41,30 @@ import { CalendarService } from './sevices/calendar.service';
     ReactiveFormsModule,
     MatDialogModule,
     MatSelectModule,
+    HttpClientModule,
+    EffectsModule.forRoot([]),
+    StoreModule.forRoot({}),
+    EntityDataModule.forRoot(entityConfig)
 
-    StoreModule.forRoot({ calendar: calendarReducer })
+    //StoreModule.forRoot({ calendar: calendarReducer })
   ],
-  providers: [CalendarService],
+  providers: [
+    CalendarService,
+    {
+      provide: DefaultDataServiceConfig,
+      useValue: {
+        root: 'http://localhost:3004/'
+      }
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
+
+//npm i @ngrx/effects @ngrx/entity @ngrx/data @ngrx/store @ngrx/store-devtools
+//npm i json-server
+//add to imports
+
+// EffectsModule.forRoot([]),
+// StoreModule.forRoot({}),
+// EntityDataModule.forRoot(entityConfig)

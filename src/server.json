@@ -1,0 +1,16 @@
+{
+  "appointments": [
+    {
+      "startDate": "2020-08-24",
+      "endDate": "2020-08-28",
+      "userId": "2",
+      "id": "-5bNgRG"
+    },
+    {
+      "startDate": "2020-08-23",
+      "endDate": "2020-08-27",
+      "userId": "1",
+      "id": "zgO4DUd"
+    }
+  ]
+}

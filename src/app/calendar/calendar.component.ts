@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import * as moment from 'moment';
 import { CalendarService } from '../sevices/calendar.service';
+import { Appointment } from '../models/appointment';
+import { Observable } from 'rxjs';
+import calendar from '../calendarState';
 @Component({
   selector: 'app-calendar',
   templateUrl: './calendar.component.html',
@@ -12,23 +15,22 @@ export class CalendarComponent implements OnInit {
   current;
   days = Array(31);
   appointments = [];
-  months;
-  users;
+  months = calendar.months;
+  users = calendar.users;
+  calendar$: Observable<Appointment[]>;
 
-  constructor(
-    private calendarSevice: CalendarService //private store: Store<{ calendar: Calendar }>
-  ) {}
+  constructor(private calendarService: CalendarService) {
+    this.calendar$ = this.calendarService.entities$;
+  }
 
   ngOnInit(): void {
-    this.calendarSevice.calendar$.subscribe((res) => {
-      this.appointments = (res && res.appointments) || [];
-      this.months = res && res.months;
-      console.log(res);
-      this.users = res && res.users;
+    this.calendarService.getAll().subscribe((res) => {
+      this.appointments = res;
     });
 
-    const date = new Date();
-    console.log(moment(date).format('MMMM'));
+    this.calendar$.subscribe((res) => {
+      this.appointments = res;
+    });
   }
 
   isAppointment(day) {

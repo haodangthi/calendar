@@ -6,6 +6,7 @@ import { formatDate, checkDate } from './helpers/formControl';
 export function requestFormValidator(appointments: Appointment[]): ValidatorFn {
   return (control: AbstractControl): { [key: string]: any } | null => {
     if (control) {
+      //debugger;
       const userId: string = control.get('userId').value; //(<FormGroup>control.parent).get('userId').value;
       const startDate: string = formatDate(control.get('startDate').value);
       const endDate: string = formatDate(control.get('endDate').value);
