@@ -7,7 +7,7 @@
       [class.isWeekend]='day&&day.isWeekend'>{{day&&day.value}}
       <span class="lines">
         <span *ngFor='let user of users' [ngStyle]="appointmentExists(user.id,day)?{'background-color':user.color}:null"
-          [class.isSelected]='isAppointment(day)' class="appointment"></span>
+          [class.isSelected]='isAppointment(day)' (click)='getAppointment(user.id,day)' class="appointment"></span>
       </span>
     </li>
   </div>

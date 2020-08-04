@@ -1,20 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  FormGroup,
-  FormControl,
-  Validators,
-  FormBuilder
-} from '@angular/forms';
-import { Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import * as moment from 'moment';
-import { Appointment } from '../models/appointment';
-import { formatDate, checkDate } from '../helpers/formControl';
-import { requestFormValidator } from '../requestFormValidator';
-import calendar from '../calendarState';
-import { Observable } from 'rxjs';
-import { CalendarService } from '../sevices/calendar.service';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
+import { MatDialogRef } from '@angular/material/dialog';
+import * as moment from 'moment';
+
+import { Observable } from 'rxjs';
+import { CalendarService } from '../../services/calendar.service';
+import { DateService } from '../../services/date.service';
+
+import { User } from 'src/app/models/user';
+import { Appointment } from '../../models/appointment';
+import { requestFormValidator } from '../../validators/request-form-validator';
 @Component({
   selector: 'app-create-request',
   templateUrl: './create-request.component.html',
@@ -24,14 +20,16 @@ export class CreateRequestComponent implements OnInit {
   createRequestForm: FormGroup;
   minDate = moment().toDate();
   startDate;
-  appointments = [];
-  users = calendar.users;
+  appointments: Appointment[] = [];
+  users: User[] = [];
   calendar$: Observable<Appointment[]>;
   constructor(
     public dialogRef: MatDialogRef<CreateRequestComponent>,
-    private calendarService: CalendarService
+    private calendarService: CalendarService,
+    private dateService: DateService
   ) {
     this.calendar$ = this.calendarService.entities$;
+    this.users = this.dateService.calendar.users;
   }
 
   ngOnInit(): void {
@@ -55,8 +53,8 @@ export class CreateRequestComponent implements OnInit {
 
   createRequest() {
     const newRequest: Appointment = this.createRequestForm.value;
-    newRequest.startDate = formatDate(newRequest.startDate);
-    newRequest.endDate = formatDate(newRequest.endDate);
+    newRequest.startDate = this.dateService.formatDate(newRequest.startDate);
+    newRequest.endDate = this.dateService.formatDate(newRequest.endDate);
 
     this.calendarService.add({
       startDate: newRequest.startDate,

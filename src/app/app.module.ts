@@ -4,8 +4,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { CalendarComponent } from './calendar/calendar.component';
-import { CreateRequestComponent } from './create-request/create-request.component';
+import { CalendarComponent } from './components/calendar/calendar.component';
+import { CreateRequestComponent } from './components/create-request/create-request.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -15,16 +15,23 @@ import { MatDialogModule, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 
 import { StoreModule } from '@ngrx/store';
-import { CalendarService } from './sevices/calendar.service';
+import { CalendarService } from './services/calendar.service';
+import { DateService } from './services/date.service';
 
 // ngrx data
 import { HttpClientModule } from '@angular/common/http';
 import { EntityDataModule, DefaultDataServiceConfig } from '@ngrx/data';
 import { entityConfig } from './entity-metadata';
 import { EffectsModule } from '@ngrx/effects';
+import { ChangeRequestComponent } from './components/change-request/change-request.component';
 
 @NgModule({
-  declarations: [AppComponent, CalendarComponent, CreateRequestComponent],
+  declarations: [
+    AppComponent,
+    CalendarComponent,
+    CreateRequestComponent,
+    ChangeRequestComponent
+  ],
 
   entryComponents: [CreateRequestComponent],
   imports: [
@@ -50,6 +57,7 @@ import { EffectsModule } from '@ngrx/effects';
   ],
   providers: [
     CalendarService,
+    DateService,
     {
       provide: DefaultDataServiceConfig,
       useValue: {

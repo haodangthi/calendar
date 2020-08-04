@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 import { MatDialog } from '@angular/material/dialog';
-import { CreateRequestComponent } from './create-request/create-request.component';
+import { CreateRequestComponent } from './components/create-request/create-request.component';
 
 @Component({
   selector: 'app-root',

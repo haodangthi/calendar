@@ -5,6 +5,7 @@ import {
   EntityCollectionServiceBase,
   EntityCollectionServiceElementsFactory
 } from '@ngrx/data';
+
 @Injectable({
   providedIn: 'root'
 })
