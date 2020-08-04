@@ -16,31 +16,44 @@ import { ChangeRequestComponent } from '../change-request/change-request.compone
 export class CalendarComponent implements OnInit {
   calendar = {};
   title = 'calendar';
-  current;
+  currentYear;
   days = Array(31);
+  years;
   appointments: Appointment[] = [];
   months: Month[] = [];
   users: User[] = [];
-  calendar$: Observable<Appointment[]>;
+  appointments$: Observable<Appointment[]>;
 
   constructor(
     private calendarService: CalendarService,
     private dateService: DateService,
     public dialog: MatDialog
   ) {
-    this.calendar$ = this.calendarService.entities$;
-    this.months = this.dateService.calendar.months;
-    this.users = this.dateService.calendar.users;
+    this.appointments$ = this.calendarService.entities$;
+    // this.months = this.dateService.calendar.months;
+    this.users = this.dateService.users;
   }
 
   ngOnInit(): void {
+    this.currentYear = this.dateService.currentYear;
     this.calendarService.getAll().subscribe((res) => {
+      //debugger;
+      this.appointments = res;
+      console.log(this.appointments);
+    });
+
+    this.appointments$.subscribe((res) => {
       this.appointments = res;
     });
 
-    this.calendar$.subscribe((res) => {
-      this.appointments = res;
+    this.years = this.dateService.years;
+    this.dateService.calendar$.subscribe((res) => {
+      this.months = res.months;
     });
+    //debugger;
+  }
+  setCurrentYear() {
+    this.dateService.setYear(this.currentYear);
   }
 
   isAppointment(day) {
@@ -68,8 +81,5 @@ export class CalendarComponent implements OnInit {
     dialogConfig.data = appointment;
     this.dialog.open(ChangeRequestComponent, dialogConfig);
     console.log(appointment);
-  }
-  lineClick(event) {
-    console.log(event.target);
   }
 }

@@ -1,4 +1,13 @@
+
+ <h1>Current year:{{currentYear}}</h1>
+ <mat-form-field appearance="fill">
+  <mat-label>Choose a year</mat-label>
+  <mat-select [(ngModel)]="currentYear" (selectionChange)='setCurrentYear()'>
+    <mat-option *ngFor='let year of years' [value]="year" >{{year}}</mat-option>
+  </mat-select>
+</mat-form-field>
 <div class="calendar">
+ 
 
   <div *ngFor='let month of months' class="grid">
     <div class="month">{{month.name}}</div>

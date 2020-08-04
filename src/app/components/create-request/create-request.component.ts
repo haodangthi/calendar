@@ -22,28 +22,27 @@ export class CreateRequestComponent implements OnInit {
   startDate;
   appointments: Appointment[] = [];
   users: User[] = [];
-  calendar$: Observable<Appointment[]>;
+  appointments$: Observable<Appointment[]>;
   constructor(
     public dialogRef: MatDialogRef<CreateRequestComponent>,
     private calendarService: CalendarService,
     private dateService: DateService
   ) {
-    this.calendar$ = this.calendarService.entities$;
-    this.users = this.dateService.calendar.users;
+    this.appointments$ = this.calendarService.entities$;
+    this.users = this.dateService.users;
   }
 
   ngOnInit(): void {
-    this.calendar$.subscribe((res) => {
+    this.appointments$.subscribe((res) => {
       this.appointments = res;
       if (!this.createRequestForm) {
-        //debugger;
         this.createRequestForm = new FormGroup(
           {
             id: new FormControl('1'),
             startDate: new FormControl(null, [Validators.required]),
             endDate: new FormControl(null, [Validators.required]),
             type: new FormControl(null),
-            userId: new FormControl(null)
+            userId: new FormControl(null, [Validators.required])
           },
           { validators: [requestFormValidator(this.appointments)] }
         );

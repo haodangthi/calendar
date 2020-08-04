@@ -20,21 +20,21 @@ export class ChangeRequestComponent implements OnInit {
   appointmnent: Appointment;
   appointments: Appointment[] = [];
   users: User[] = [];
-  calendar$: Observable<Appointment[]>;
+  appointments$: Observable<Appointment[]>;
   constructor(
     public dialogRef: MatDialogRef<ChangeRequestComponent>,
     private dateService: DateService,
     private calendarService: CalendarService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    this.calendar$ = this.calendarService.entities$;
+    this.appointments$ = this.calendarService.entities$;
     this.appointmnent = data;
-    this.users = this.dateService.calendar.users;
+    this.users = this.dateService.users;
   }
 
   ngOnInit(): void {
     console.log(this.data);
-    this.calendar$.subscribe((res) => {
+    this.appointments$.subscribe((res) => {
       this.appointments = res;
       if (!this.changeRequestForm) {
         //debugger;
