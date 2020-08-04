@@ -50,18 +50,30 @@ export class DateService {
     this.currentYear = year;
     this.calendar$.next({
       ...this.calendar$.value,
-      months: this.setMonth(this.currentYear)
+      months: this.setMonths(this.currentYear)
     });
   }
 
-  setMonth(year) {
-    return this.monthsNames.map(
-      (e, index): Month => ({
-        name: e,
-        daysNumber: this.days(year, index + 1).daysQuantity,
-        days: this.days(year, index + 1).days
-      })
+  setMonths(year) {
+    const prevYear = '' + (year - 1);
+    const nextYear = '' + (+year + 1);
+    const lastMonthName = moment.months()[11];
+    const nextMonthName = moment.months()[0];
+    const lastMonth = this.getMonth(prevYear, lastMonthName, 11);
+    const nextMonth = this.getMonth(nextYear, nextMonthName, 0);
+    const currentYearMonths = this.monthsNames.map(
+      (e, index): Month => this.getMonth(year, e, index)
     );
+    return [lastMonth, ...currentYearMonths, nextMonth];
+  }
+
+  getMonth(year, monthName, index) {
+    return {
+      monthName,
+      year,
+      daysNumber: this.days(year, index + 1).daysQuantity,
+      days: this.days(year, index + 1).days
+    };
   }
 
   isWeekend(day) {
@@ -76,10 +88,10 @@ export class DateService {
     return moment(date).clone().format('YYYY-MM-DD');
   }
 
-  getDay(monthIndex, index) {
-    const date = `${this.currentYear}-${this.dateString(
-      monthIndex
-    )}-${this.dateString(index)}`;
+  getDay(year, monthIndex, index) {
+    const date = `${year}-${this.dateString(monthIndex)}-${this.dateString(
+      index
+    )}`;
     const isToday = moment().isSame(date, 'date');
     const weekDay = moment(date).format('dddd');
     return { date, isToday, weekDay };
@@ -97,7 +109,7 @@ export class DateService {
       .fill(1)
       .map(
         (day, i): Day => {
-          const date = this.getDay(index, i + 1);
+          const date = this.getDay(year, index, i + 1);
           return {
             id: date.date,
             value: i + 1,

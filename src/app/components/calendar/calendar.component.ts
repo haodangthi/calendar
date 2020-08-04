@@ -14,7 +14,6 @@ import { ChangeRequestComponent } from '../change-request/change-request.compone
   styleUrls: ['./calendar.component.scss']
 })
 export class CalendarComponent implements OnInit {
-  calendar = {};
   title = 'calendar';
   currentYear;
   days = Array(31);
@@ -30,7 +29,6 @@ export class CalendarComponent implements OnInit {
     public dialog: MatDialog
   ) {
     this.appointments$ = this.calendarService.entities$;
-    // this.months = this.dateService.calendar.months;
     this.users = this.dateService.users;
   }
 
@@ -39,7 +37,6 @@ export class CalendarComponent implements OnInit {
     this.calendarService.getAll().subscribe((res) => {
       //debugger;
       this.appointments = res;
-      console.log(this.appointments);
     });
 
     this.appointments$.subscribe((res) => {
@@ -60,6 +57,9 @@ export class CalendarComponent implements OnInit {
     return this.appointments.some((app) => {
       return app.startDate <= day.id && app.endDate >= day.id;
     });
+  }
+  isCurrentYear(month) {
+    return month.year === this.currentYear;
   }
   getUsersAppointments(userId) {
     return this.appointments.filter((app) => app.userId == userId);

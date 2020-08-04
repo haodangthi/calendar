@@ -9,8 +9,8 @@
 <div class="calendar">
  
 
-  <div *ngFor='let month of months' class="grid">
-    <div class="month">{{month.name}}</div>
+  <div *ngFor='let month of months' class="grid" [class.isNotCurrentYear]='!isCurrentYear(month)'>
+    <div class="month">{{month.monthName}}</div>
 
     <li *ngFor='let day of month.days;let i=index' [class.isToday]='day&&day.isToday'
       [class.isWeekend]='day&&day.isWeekend'>{{day&&day.value}}

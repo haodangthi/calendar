@@ -1,6 +1,6 @@
 
 .calendar{
-    margin: 10% auto;
+    margin: 3% auto;
     width: 90%;
     border: 1px solid black;
     border-radius: 10px;
@@ -74,4 +74,8 @@
     //position: absolute;
     margin-bottom: 15%;
     color: white;
+}
+
+.isNotCurrentYear{
+    opacity: 50%;
 }
