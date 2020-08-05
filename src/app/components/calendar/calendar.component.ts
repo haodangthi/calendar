@@ -82,4 +82,7 @@ export class CalendarComponent implements OnInit {
     this.dialog.open(ChangeRequestComponent, dialogConfig);
     console.log(appointment);
   }
+  ngOnDestroy() {
+    this.dateService.calendar$.unsubscribe();
+  }
 }

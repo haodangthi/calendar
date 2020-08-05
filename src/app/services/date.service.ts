@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 import { Calendar } from '../models/calendar';
 import { Month } from '../models/month';
 import { User } from '../models/user';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
