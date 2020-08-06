@@ -48,6 +48,7 @@ export class CalendarComponent implements OnInit {
       this.months = res.months;
     });
     //debugger;
+    console.log(this.months[0]);
   }
   setCurrentYear() {
     this.dateService.setYear(this.currentYear);

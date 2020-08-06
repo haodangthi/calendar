@@ -58,12 +58,18 @@ export class ChangeRequestComponent implements OnInit {
 
   saveChanges() {
     const updatedRequest = this.getUpdatedRequest();
+    console.log(updatedRequest);
+
     this.calendarService.update(updatedRequest);
     this.dialogRef.close();
   }
 
   getUpdatedRequest() {
     let updatedRequest: Appointment = this.changeRequestForm.value;
+    console.log(updatedRequest);
+    console.log(updatedRequest.startDate);
+    console.log(updatedRequest.endDate);
+
     return (updatedRequest = {
       ...updatedRequest,
       startDate: this.dateService.formatDate(updatedRequest.startDate),

@@ -67,12 +67,12 @@ export class DateService {
     return [lastMonth, ...currentYearMonths, nextMonth];
   }
 
-  getMonth(year, monthName, index) {
+  getMonth(year, monthName, monthIndex) {
     return {
       monthName,
       year,
-      daysNumber: this.days(year, index + 1).daysQuantity,
-      days: this.days(year, index + 1).days
+      daysNumber: this.days(year, monthIndex + 1).daysQuantity,
+      days: this.days(year, monthIndex + 1).days
     };
   }
 
@@ -88,9 +88,9 @@ export class DateService {
     return moment(date).clone().format('YYYY-MM-DD');
   }
 
-  getDay(year, monthIndex, index) {
+  getDay(year, monthIndex, dayIndex) {
     const date = `${year}-${this.dateString(monthIndex)}-${this.dateString(
-      index
+      dayIndex
     )}`;
     const isToday = moment().isSame(date, 'date');
     const weekDay = moment(date).format('dddd');
@@ -100,8 +100,11 @@ export class DateService {
     return (<FormGroup>control.parent).get(controlName).value;
   }
 
-  days(year: string, index: number): { days: Day[]; daysQuantity: number } {
-    const monthString = `${year}-${this.dateString(index)}`;
+  days(
+    year: string,
+    monthIndex: number
+  ): { days: Day[]; daysQuantity: number } {
+    const monthString = `${year}-${this.dateString(monthIndex)}`;
 
     const daysQuantity = moment(monthString).clone().daysInMonth();
 
@@ -109,7 +112,7 @@ export class DateService {
       .fill(1)
       .map(
         (day, i): Day => {
-          const date = this.getDay(year, index, i + 1);
+          const date = this.getDay(year, monthIndex, i + 1);
           return {
             id: date.date,
             value: i + 1,

@@ -16,7 +16,7 @@ export function getControlValues(control) {
     userId: control.get('userId').value,
     startDate: formatDate(control.get('startDate').value),
     endDate: formatDate(control.get('endDate').value),
-    appointmentId: control.get('id').value
+    appointmentId: control.get('id') && control.get('id').value
   };
 }
 

@@ -52,6 +52,8 @@ export class CreateRequestComponent implements OnInit {
 
   createRequest() {
     const newRequest: Appointment = this.createRequestForm.value;
+    console.log(newRequest);
+
     newRequest.startDate = this.dateService.formatDate(newRequest.startDate);
     newRequest.endDate = this.dateService.formatDate(newRequest.endDate);
 
