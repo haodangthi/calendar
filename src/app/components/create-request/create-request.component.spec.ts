@@ -1,4 +1,10 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {
+  async,
+  ComponentFixture,
+  TestBed,
+  fakeAsync,
+  tick
+} from '@angular/core/testing';
 
 import { CreateRequestComponent } from './create-request.component';
 import { StoreModule } from '@ngrx/store';
@@ -23,6 +29,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { requestFormValidator } from 'src/app/validators/request-form-validator';
 const matDialogRefStub = {};
 const fakeAppointments = [
   {
@@ -95,7 +102,7 @@ describe('CreateRequestComponent', () => {
     });
   });
 
-  it('form should NOT  be valid', () => {
+  it('validator should work correctly', () => {
     component.appointments = fakeAppointments;
     component.createRequestForm.controls['startDate'].setValue(
       'Tue Aug 18 2020 00:00:00 GMT+0300 (Eastern European Summer Time)'
@@ -104,18 +111,30 @@ describe('CreateRequestComponent', () => {
       'Thu Aug 20 2020 00:00:00 GMT+0300 (Eastern European Summer Time)'
     );
     component.createRequestForm.controls['userId'].setValue('2');
-    expect(component.createRequestForm.valid).toBeFalsy();
+    expect(
+      requestFormValidator(fakeAppointments)(component.createRequestForm)
+    ).toEqual({ endDate: true });
   });
 
-  it('form should be valid', () => {
+  it('validator should return null', () => {
     component.appointments = fakeAppointments;
     component.createRequestForm.controls['startDate'].setValue(
       'Tue Aug 04 2020 00:00:00 GMT+0300 (Eastern European Summer Time)'
     );
     component.createRequestForm.controls['endDate'].setValue(
-      'Thu Aug 08 2020 00:00:00 GMT+0300 (Eastern European Summer Time)'
+      'Thu Aug 10 2020 00:00:00 GMT+0300 (Eastern European Summer Time)'
     );
     component.createRequestForm.controls['userId'].setValue('2');
-    expect(component.createRequestForm.valid).toEqual(true);
+    console.log(component.createRequestForm.value);
+    expect(
+      requestFormValidator(fakeAppointments)(component.createRequestForm)
+    ).toEqual(null);
+  });
+
+  it('validator should return null when control is empty', () => {
+    component.appointments = fakeAppointments;
+    expect(
+      requestFormValidator(fakeAppointments)(component.createRequestForm)
+    ).toEqual(null);
   });
 });
