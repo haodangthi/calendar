@@ -13,12 +13,7 @@ import {
   MatDialogRef,
   MAT_DIALOG_DATA
 } from '@angular/material/dialog';
-import {
-  FormsModule,
-  ReactiveFormsModule,
-  FormGroup,
-  FormControl
-} from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { HttpClientModule } from '@angular/common/http';
@@ -29,22 +24,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { requestFormValidator } from 'src/app/validators/request-form-validator';
 const matDialogRefStub = {};
-const fakeAppointments = [
-  {
-    endDate: '2020-08-21',
-    id: '2020-08-212020-08-11',
-    startDate: '2020-08-11',
-    userId: '1'
-  },
-  {
-    endDate: '2020-08-23',
-    id: '2020-08-232020-08-11',
-    startDate: '2020-08-11',
-    userId: '2'
-  }
-];
 describe('CreateRequestComponent', () => {
   let component: CreateRequestComponent;
   let fixture: ComponentFixture<CreateRequestComponent>;
@@ -78,12 +58,12 @@ describe('CreateRequestComponent', () => {
     }).compileComponents();
   }));
 
-  beforeEach(() => {
+  beforeEach(async(() => {
     fixture = TestBed.createComponent(CreateRequestComponent);
     component = fixture.componentInstance;
     component.ngOnInit();
     fixture.detectChanges();
-  });
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();
@@ -100,41 +80,5 @@ describe('CreateRequestComponent', () => {
       type: null,
       userId: '2'
     });
-  });
-
-  it('validator should work correctly', () => {
-    component.appointments = fakeAppointments;
-    component.createRequestForm.controls['startDate'].setValue(
-      'Tue Aug 18 2020 00:00:00 GMT+0300 (Eastern European Summer Time)'
-    );
-    component.createRequestForm.controls['endDate'].setValue(
-      'Thu Aug 20 2020 00:00:00 GMT+0300 (Eastern European Summer Time)'
-    );
-    component.createRequestForm.controls['userId'].setValue('2');
-    expect(
-      requestFormValidator(fakeAppointments)(component.createRequestForm)
-    ).toEqual({ endDate: true });
-  });
-
-  it('validator should return null', () => {
-    component.appointments = fakeAppointments;
-    component.createRequestForm.controls['startDate'].setValue(
-      'Tue Aug 04 2020 00:00:00 GMT+0300 (Eastern European Summer Time)'
-    );
-    component.createRequestForm.controls['endDate'].setValue(
-      'Thu Aug 10 2020 00:00:00 GMT+0300 (Eastern European Summer Time)'
-    );
-    component.createRequestForm.controls['userId'].setValue('2');
-    console.log(component.createRequestForm.value);
-    expect(
-      requestFormValidator(fakeAppointments)(component.createRequestForm)
-    ).toEqual(null);
-  });
-
-  it('validator should return null when control is empty', () => {
-    component.appointments = fakeAppointments;
-    expect(
-      requestFormValidator(fakeAppointments)(component.createRequestForm)
-    ).toEqual(null);
   });
 });

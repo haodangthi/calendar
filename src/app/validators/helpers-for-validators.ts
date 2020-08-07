@@ -1,9 +1,6 @@
 import * as moment from 'moment';
-import { ValidatorFn, AbstractControl } from '@angular/forms';
-import { Appointment } from '../models/appointment';
 
 export function validateDates(appointmnets, startDate, endDate) {
-  debugger;
   return appointmnets.some(
     (app) =>
       (app.startDate <= startDate && app.endDate >= startDate) ||
@@ -13,7 +10,6 @@ export function validateDates(appointmnets, startDate, endDate) {
 }
 
 export function getControlValues(control) {
-  debugger;
   return {
     userId: control.get('userId').value,
     startDate: formatDate(control.get('startDate').value),

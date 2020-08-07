@@ -48,11 +48,11 @@ describe('DateService', () => {
     expect(service.isWeekend('Sunday')).toEqual(true);
   });
 
-  it('', () => {
+  it('getMonth method should return a month object', () => {
     expect(service.getMonth('2020', 'September', 10).days[0]).toEqual(obj);
   });
 
-  it('', () => {
+  it('getDay method should return a day object', () => {
     expect(service.getDay('2020', 10, 1)).toEqual(day);
   });
 

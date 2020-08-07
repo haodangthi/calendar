@@ -1,5 +1,6 @@
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { requestFormValidator } from './request-form-validator';
+import { changeRequestFormValidator } from './change-request-validator';
 const fakeAppointments = [
   {
     endDate: '2020-08-21',
@@ -32,16 +33,17 @@ const endDate1 =
   'Thu Aug 27 2020 00:00:00 GMT+0300 (Eastern European Summer Time)';
 
 describe('CHANGE REQUEST FORM VALIDATOR', () => {
-  const form = new FormGroup(
-    {
-      id: new FormControl('1'),
-      startDate: new FormControl(null, [Validators.required]),
-      endDate: new FormControl(null, [Validators.required]),
-      type: new FormControl(null),
-      userId: new FormControl('1', [Validators.required])
-    },
-    { validators: [requestFormValidator(fakeAppointments)] }
-  );
+  const form = new FormGroup({
+    id: new FormControl('1'),
+    startDate: new FormControl(null),
+    endDate: new FormControl(null),
+    type: new FormControl(null),
+    userId: new FormControl('1')
+  });
+
+  it('change request form validator should return null', () => {
+    expect(changeRequestFormValidator(fakeAppointments)(form)).toEqual(null);
+  });
 
   it('change request form should be valid and return null', () => {
     form.controls['startDate'].setValue(startDate);
@@ -49,7 +51,7 @@ describe('CHANGE REQUEST FORM VALIDATOR', () => {
     form.controls['userId'].setValue('1');
     form.controls['id'].setValue('2020-08-212020-08-11');
     expect(form.valid).toEqual(true);
-    expect(requestFormValidator(fakeAppointments)(form)).toEqual(null);
+    expect(changeRequestFormValidator(fakeAppointments)(form)).toEqual(null);
   });
 
   it('change request form should NOT be valid and not return null', () => {
@@ -57,7 +59,7 @@ describe('CHANGE REQUEST FORM VALIDATOR', () => {
     form.controls['endDate'].setValue(endDate1);
     form.controls['userId'].setValue('1');
     form.controls['id'].setValue('2020-08-282020-08-22');
-    expect(requestFormValidator(fakeAppointments)(form)).toEqual({
+    expect(changeRequestFormValidator(fakeAppointments)(form)).toEqual({
       endDate: true
     });
   });
