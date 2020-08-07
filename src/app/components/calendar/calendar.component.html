@@ -1,29 +1,34 @@
 
- <h1>Current year:{{currentYear}}</h1>
- <mat-form-field appearance="fill">
+<mat-form-field appearance="fill">
   <mat-label>Choose a year</mat-label>
   <mat-select [(ngModel)]="currentYear" (selectionChange)='setCurrentYear()'>
-    <mat-option *ngFor='let year of years' [value]="year" >{{year}}</mat-option>
+    <mat-option *ngFor='let year of years' [value]="year">{{year}}</mat-option>
   </mat-select>
 </mat-form-field>
 <div class="calendar">
- 
 
-  <div *ngFor='let month of months' class="grid" [class.isNotCurrentYear]='!isCurrentYear(month)'>
+
+  <div *ngFor='let user of users;let userIndex=index' [ngStyle]="{'background-color':user.color}">
+    <div *ngFor='let app of appointments' (click)='changeAppointment(app)'>
+      <div *ngIf='isWithinOneMonth(app) && checkAppointment(app,user)' class="app"
+        [ngStyle]="getCalculatedStyleForMonth(app,userIndex,user)"></div>
+      <div *ngIf='!isWithinOneMonth(app) && checkAppointment(app,user)' class="app"
+        [ngStyle]="getCalculatedStyle(app,'START',userIndex,user)"></div>
+      <div *ngIf='!isWithinOneMonth(app) && checkAppointment(app,user)' class="app"
+        [ngStyle]="getCalculatedStyle(app,'END',userIndex,user)"></div>
+    </div>
+  </div>
+
+
+
+  <div *ngFor='let month of months' class="grid" [class.isNotCurrentYear]='!isCurrentMonth(month)'>
     <div class="month">{{month.monthName}}</div>
-
     <li *ngFor='let day of month.days;let i=index' [class.isToday]='day&&day.isToday'
       [class.isWeekend]='day&&day.isWeekend'>{{day&&day.value}}
-      <span class="lines">
+      <!-- <span class="lines">
         <span *ngFor='let user of users' [ngStyle]="appointmentExists(user.id,day)?{'background-color':user.color}:null"
           [class.isSelected]='isAppointment(day)' (click)='getAppointment(user.id,day)' class="appointment"></span>
-      </span>
+      </span> -->
     </li>
   </div>
 </div>
-
-
-
-
-
-

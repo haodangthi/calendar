@@ -9,7 +9,7 @@ export function requestFormValidator(appointments: Appointment[]): ValidatorFn {
       const userAppointments = appointments.filter(
         (app) => app.userId === userId
       );
-      debugger;
+      //debugger;
       return checkDate(userAppointments, startDate, endDate)
         ? { endDate: true }
         : null;
